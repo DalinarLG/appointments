@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"DalinarLG/appointments/middlewares"
+	"DalinarLG/appointments/routers"
 	"net/http"
 	"os"
 
@@ -12,6 +14,9 @@ import (
 
 func Handlers(){
 	r := mux.NewRouter()
+
+	r.HandleFunc("/registeruser", middlewares.CheckDb(routers.UserRegister)).Methods("POST")
+	r.HandleFunc("/loginuser", middlewares.CheckDb(routers.Userlogin)).Methods("GET")
 
 	PORT := os.Getenv("PORT")
 	if PORT == ""{
