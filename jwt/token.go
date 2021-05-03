@@ -8,7 +8,7 @@ import (
 )
 
 func GenerateToken(u models.User) (string, error) {
-	mykey := []byte("jestream960")
+	mykey := []byte("jetstream960")
 	payload := jwt.MapClaims{
 		"id":       u.ID,
 		"name":     u.Name,

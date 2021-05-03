@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"DalinarLG/appointments/db"
+	"DalinarLG/appointments/db"	
 	"net/http"
 	"strconv"
 )
@@ -26,7 +26,7 @@ func DelUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	
-	err = db.DelUser(cedid)
+	err = db.DelUser(cedid)	
 	if err != nil {
 		http.Error(w, "Error: "+err.Error(), 400)
 		return

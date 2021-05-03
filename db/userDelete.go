@@ -3,7 +3,7 @@ package db
 import "log"
 
 func DelUser(ced_id int) error {
-	stmt, err := DB.Prepare("DELETE from user where id = ? or cedula = ? AND role = 1")
+	stmt, err := DB.Prepare("DELETE from user where id = ? or cedula = ?")
 	if err != nil {
 		log.Println(err.Error())
 		return err
@@ -11,7 +11,7 @@ func DelUser(ced_id int) error {
 
 	defer stmt.Close()
 
-	_, err = stmt.Exec(ced_id)
-
+	_, err = stmt.Exec(ced_id, ced_id)
+	log.Println(err)
 	return err
 }

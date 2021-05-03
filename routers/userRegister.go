@@ -3,6 +3,7 @@ package routers
 import (
 	"DalinarLG/appointments/db"
 	"DalinarLG/appointments/models"
+	"DalinarLG/appointments/validations"
 	"encoding/json"
 	"net/http"
 
@@ -15,6 +16,12 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		http.Error(w, "Error: "+err.Error(), 400)
+		return
+	}
+
+	status := validations.RoleValidation(UserID)
+	if !status {
+		http.Error(w, "User not authorized for this operation", 400)
 		return
 	}
 
@@ -43,7 +50,7 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	status, err := db.UserRegister(user)
+	status, err = db.UserRegister(user)
 	if err != nil {
 		http.Error(w, "Error: "+err.Error(), 400)
 		return

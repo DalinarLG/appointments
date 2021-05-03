@@ -3,21 +3,22 @@ package routers
 import (
 	"DalinarLG/appointments/db"
 	"DalinarLG/appointments/models"
-	"errors"
+	"errors"	
 	"strings"
 
-	"github.com/dgrijalva/jwt-go"
+	jwt "github.com/dgrijalva/jwt-go"
 )
 
 var UserID int
 var UserCED int
-func ProccessToken(t string)(*models.Claims, bool, error){
+
+func ProccessToken(t string) (*models.Claims, bool, error) {
 	myKey := []byte("jetstream960")
 	claims := &models.Claims{}
-	splitToken := strings.Split(t, "Bearer")
+	splitToken := strings.Split(t, "Bearer")	
 
-	if len(splitToken) != 2{
-		return claims, false, errors.New("error proccessing token")
+	if len(splitToken) != 2 {
+		return claims, false, errors.New("error proccessing token split")
 	}
 
 	token := strings.TrimSpace(splitToken[1])
@@ -25,8 +26,9 @@ func ProccessToken(t string)(*models.Claims, bool, error){
 	tk, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token)(interface{}, error){
 		return myKey, nil
 	})
+	
 	if err == nil {
-		_, found , _ := db.Checkced(claims.Cedula)
+		_, found, _ := db.Checkced(claims.ID)		
 		if found {
 			UserID = claims.ID
 			UserCED = claims.Cedula
@@ -36,7 +38,7 @@ func ProccessToken(t string)(*models.Claims, bool, error){
 	}
 
 	if !tk.Valid {
-		return claims, false, errors.New("error proccessing token")
+		return claims, false, errors.New("error proccessing token tk valid")
 	}
 
 	return claims, false, err
