@@ -17,6 +17,7 @@ func Handlers(){
 
 	r.HandleFunc("/registeruser", middlewares.CheckDb(routers.UserRegister)).Methods("POST")
 	r.HandleFunc("/loginuser", middlewares.CheckDb(routers.Userlogin)).Methods("GET")
+	r.HandleFunc("deluser", middlewares.CheckDb(middlewares.ValidateToken(routers.DelUser))).Methods("DELETE")
 
 	PORT := os.Getenv("PORT")
 	if PORT == ""{

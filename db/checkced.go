@@ -6,9 +6,9 @@ import (
 )
 
 
-func Checkced(ced int )(models.User, bool, error){
+func Checkced(ced_id int )(models.User, bool, error){
 	var user models.User
-	stmt, err := DB.Prepare("select * from user where cedula = ?")
+	stmt, err := DB.Prepare("select * from user where cedula = ? or id = ?")
 	if err != nil{
 		log.Println("Error: "+err.Error())
 		return user, false, err
@@ -16,7 +16,7 @@ func Checkced(ced int )(models.User, bool, error){
 
 	defer stmt.Close()
 
-	err = stmt.QueryRow(ced).Scan(&user.ID, &user.Cedula, &user.Name, &user.Lastname, &user.Cellphone, &user.Role, &user.Password)
+	err = stmt.QueryRow(ced_id, ced_id).Scan(&user.ID, &user.Cedula, &user.Name, &user.Lastname, &user.Cellphone, &user.Role, &user.Password)
 	if err != nil {
 		log.Println("Error: "+err.Error())
 		return user, false, err
